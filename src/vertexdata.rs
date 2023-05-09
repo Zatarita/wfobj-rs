@@ -86,7 +86,7 @@ impl Vertex {
             converted_elements.push(element.parse().ok()?);
         }
 
-        match elements.len() {
+        match converted_elements.len() {
             3 => Some(Vertex { x: converted_elements[0], y: converted_elements[1], z: converted_elements[2], w: 1.0 }),
             4 => Some(Vertex { x: converted_elements[0], y: converted_elements[1], z: converted_elements[2], w: converted_elements[3] }),
             _ => None
