@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------------------
 
  * Author: Zatarita
- * Last Edit: Zatarita (5/9/2023)
+ * Last Edit: Zatarita (5/11/2023)
  * 
  * OBJ Parsing & Line Data
  * 
@@ -10,8 +10,6 @@
 use std::fs::File;
 use std::io::{BufReader, BufRead, Seek, SeekFrom};
 use std::collections::VecDeque;
-
-use crate::keywords::validate_keyword;
 
 #[derive(Debug)]
 pub enum ParserError {

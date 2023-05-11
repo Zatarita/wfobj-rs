@@ -40,6 +40,7 @@ macro_rules! vertex_data {
 // Generalized from method. Could be a derive, but I don't feel like it for something this small
 macro_rules! vertex_from {
     ( $struct_name:ident, $ty:ty, $( $v:ident ),* ) => {
+        #[allow(unused_assignments)]
         pub fn from(elements: &VecDeque<String>) -> Option<$struct_name> {
             // Validate the number of elements read from the line
             if elements.len() < count!($($v)*) {
