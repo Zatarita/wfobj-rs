@@ -70,12 +70,12 @@ macro_rules! vertex_from {
 vertex_data!(Vertex, f32, x, y, z, w);
 vertex_data!(ParameterSpaceVertex, f32, u, v, w);
 vertex_data!(VertexNormal, f32, i, j, k);
-vertex_data!(TextureCoordinates, f32, u, v, w);
+vertex_data!(TextureCoordinate, f32, u, v, w);
 
 // Every "from" method can be generalized except for vertex
 impl ParameterSpaceVertex   { vertex_from!(ParameterSpaceVertex, f32, u, v, w); }
 impl VertexNormal           { vertex_from!(VertexNormal, f32, i, j, k);         }
-impl TextureCoordinates     { vertex_from!(TextureCoordinates, f32, u, v, w);   }
+impl TextureCoordinate      { vertex_from!(TextureCoordinate, f32, u, v, w);   }
 
 // The Vertex "from" method is unique as it has the chance to have a default value.
 impl Vertex {
