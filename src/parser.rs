@@ -11,6 +11,8 @@ use std::fs::File;
 use std::io::{BufReader, BufRead, Seek, SeekFrom};
 use std::collections::VecDeque;
 
+use crate::keywords;
+
 #[derive(Debug)]
 pub enum ParserError {
 }
@@ -20,7 +22,7 @@ pub enum ParserError {
 pub struct ObjLine {
     pub keyword:    Option<String>,     // Keywords define the function of the line. Can be empty if comment
     pub parameters: VecDeque<String>,   // Parameter(s) when available supply additional information for keywords
-    pub comment:   Option<String>       // Comments can appear at any point in the file.
+    pub comment:    Option<String>      // Comments can appear at any point in the file.
 }
 
 impl ObjLine {
@@ -30,7 +32,7 @@ impl ObjLine {
         let mut parameters: VecDeque<String> = VecDeque::<String>::new();
         let mut comment:    Option<String>   = None;
 
-        if let Some( (data, line_comment) ) = line.trim_end().split_once("#") {
+        if let Some( (data, line_comment) ) = line.trim_end().split_once(keywords::COMMENT) {
             let mut line_elements: VecDeque<String> = data.split_ascii_whitespace().map(|s| s.to_owned() ).collect();
             
             if !line_comment.is_empty() {
@@ -62,6 +64,8 @@ impl ObjParser {
 
     // Gets the next line from the file accounting for potential line breaks.
     fn read_string(&mut self) -> Option<String> {
+        const LINE_BREAK: char = '\\';
+
         let mut buf:    String = String::new();
         let bytes_read: usize  = self.reader.read_line(&mut buf).ok()?;
 
@@ -72,10 +76,10 @@ impl ObjParser {
 
         // Lines can be split using "\". If this is the case, the next line is a part of the current line.
         // We need to read the next line, and concat them together.
-        while buf.trim_end().ends_with('\\') {
+        while buf.trim_end().ends_with(LINE_BREAK) {
             let next_line = self.read_string()?;
 
-            buf = format!("{}{next_line}", buf.trim_end().trim_end_matches("\\"));
+            buf = format!("{}{next_line}", buf.trim_end().trim_end_matches(LINE_BREAK));
         }
 
         Some(buf)
