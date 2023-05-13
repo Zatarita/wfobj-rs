@@ -7,7 +7,6 @@ mod interpreter;
 mod vertex_buffer;
 mod index;
 mod freeform_geometry;
-mod matrix;
 mod utility;
 
 
