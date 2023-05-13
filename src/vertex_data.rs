@@ -72,8 +72,6 @@ vertex_data!(ParameterSpaceVertex, f32, u, v, w);
 vertex_data!(VertexNormal, f32, i, j, k);
 vertex_data!(TextureCoordinate, f32, u, v, w);
 
-// Every "from" method can be generalized except for vertex
-impl ParameterSpaceVertex   { vertex_from!(ParameterSpaceVertex, f32, u, v, w); }
 impl VertexNormal           { vertex_from!(VertexNormal, f32, i, j, k);         }
 impl TextureCoordinate      { vertex_from!(TextureCoordinate, f32, u, v, w);   }
 
@@ -90,6 +88,24 @@ impl Vertex {
         match converted_elements.len() {
             3 => Some(Vertex { x: converted_elements[0], y: converted_elements[1], z: converted_elements[2], w: 1.0 }),
             4 => Some(Vertex { x: converted_elements[0], y: converted_elements[1], z: converted_elements[2], w: converted_elements[3] }),
+            _ => None
+        }
+    }
+}
+
+// The ParameterSpaceVertex "from" method is unique as it has the chance to have a default value.
+impl ParameterSpaceVertex {
+    pub fn from(elements: &VecDeque<String>) -> Option<ParameterSpaceVertex> {
+        // convert the elements into the correct type
+        let mut converted_elements = Vec::<f32>::new();
+        converted_elements.reserve(elements.len());
+        for element in elements {
+            converted_elements.push(element.parse().ok()?);
+        }
+
+        match converted_elements.len() {
+            2 => Some(ParameterSpaceVertex { u: converted_elements[0], v: converted_elements[1], w: 1.0 }),
+            3 => Some(ParameterSpaceVertex { u: converted_elements[0], v: converted_elements[1], w: converted_elements[2] }),
             _ => None
         }
     }

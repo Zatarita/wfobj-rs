@@ -1,14 +1,13 @@
 /* --------------------------------------------------------------------------------------
 
  * Author: Zatarita
- * Last Edit: Zatarita (5/11/2023)
+ * Last Edit: Zatarita (5/12/2023)
  * 
- * OBJ Interpreter
- *  Responsible for handeling parsed data from parser.rs
+ * Matrix for Basis Matrix
  * 
  * ------------------------------------------------------------------------------------*/
 
- use crate::parser;
- use crate::keywords;
- use crate::vertex_buffer;
- use crate::index;
+ #[derive(Debug, Clone, Copy, PartialEq, Default)]
+ pub struct Matrix {
+
+ }
