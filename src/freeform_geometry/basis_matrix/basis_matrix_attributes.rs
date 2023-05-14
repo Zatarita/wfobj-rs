@@ -15,6 +15,7 @@ use super::matrix::{Matrix, MatrixError};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum BasisMatrixAttributesError {
+    InvalidMatrixType,
     FreeFormTypeMismatch,
     MatrixSizeMismatch,
     UnknownError
@@ -22,13 +23,32 @@ pub enum BasisMatrixAttributesError {
 
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct BasisMatrixAttributes {
-    step: Step,
-    matrix: Matrix
+    pub step: Step,
+    pub matrix: Matrix
 }
 
 impl BasisMatrixAttributes {
     pub fn new(step: Step, matrix: Matrix) -> BasisMatrixAttributes {
         BasisMatrixAttributes {step, matrix}
+    }
+
+    pub fn set_matrix(&mut self, new_matrix: Matrix) {
+        self.matrix = new_matrix;
+    }
+
+    pub fn set_matrix_u(&mut self, elements: &[f32]) {
+        match &self.matrix {
+            Matrix::Curve(_)                       => self.matrix = Matrix::new_curve(elements),
+            Matrix::Surface(_, v) => self.matrix = Matrix::new_surface(elements, v.as_slice())
+        }
+    }
+
+    pub fn set_matrix_v(&mut self, elements: &[f32]) -> Result<(), BasisMatrixAttributesError> {
+        match &self.matrix {
+            Matrix::Curve(_)                       => return Err(BasisMatrixAttributesError::InvalidMatrixType),
+            Matrix::Surface(u, _) => self.matrix = Matrix::new_surface(u.as_slice(), elements)
+        }
+        Ok(())
     }
 
     // Make sure the matrix/step matches curve/surface type & The matrix size matches degree

@@ -13,13 +13,13 @@
  * 
  * ------------------------------------------------------------------------------------*/
 
-use std::collections::VecDeque;
 
 use crate::freeform_geometry::Degree;
 use super::matrix_elements::{MatrixElements, MatrixRow, MatrixColumn};
 
 pub enum MatrixError {
-    InvalidDegree
+    InvalidDegree,
+    InvalidBufferSize
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -29,16 +29,16 @@ pub enum Matrix {
 }
 
 impl Matrix {
-    pub fn new_curve(u: &VecDeque<f32>) -> Matrix {
+    pub fn new_curve(u: &[f32]) -> Matrix {
         Matrix::Curve( 
-            MatrixElements::from_deque(u) 
+            MatrixElements::new(u) 
         )
     }
 
-    pub fn new_surface(u: &VecDeque<f32>, v: &VecDeque<f32>) -> Matrix {
+    pub fn new_surface(u: &[f32], v: &[f32]) -> Matrix {
         Matrix::Surface( 
-            MatrixElements::from_deque(u),
-            MatrixElements::from_deque(v),
+            MatrixElements::new(u),
+            MatrixElements::new(v),
         )
     }
 
@@ -116,7 +116,7 @@ impl Matrix {
                     return Err(MatrixError::InvalidDegree);
                 }
 
-                if let Some(degree_v) = degree.v() {
+                if let Some(degree_v) = degree.v().to_owned() {
                     if v.len() == (degree_v + 1).pow(2) { 
                         return Ok(()); 
                     }
@@ -124,7 +124,7 @@ impl Matrix {
             }
         };
 
-        Err(MatrixError::InvalidDegree)
+        Err(MatrixError::InvalidBufferSize)
     }
 }
 

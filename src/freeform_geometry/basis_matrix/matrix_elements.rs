@@ -1,21 +1,31 @@
-use std::collections::VecDeque;
+/* --------------------------------------------------------------------------------------
+
+ * Author: Zatarita
+ * Last Edit: Zatarita (5/13/2023)
+ * 
+ * Matrix Elements
+ *      Wrapper for Vector of floats
+ *      Handles getting references to the elements as rows and columns
+ * 
+ * ------------------------------------------------------------------------------------*/
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct MatrixElements ( Vec<f32> );
 
-impl MatrixElements {
-    // Vec deque doesn't support slicing, deque was used for the pop-front and ease of use with keyword parsing. 
-    pub fn from_deque(elements: &VecDeque<f32>) -> MatrixElements {
-        let converted_vector: Vec<f32> = elements.into_iter().map(|e| e.to_owned()).collect();
-        MatrixElements::new(&converted_vector)
-    }
+pub type MatrixRow<'a>    = Vec<&'a f32>;
+pub type MatrixColumn<'a> = Vec<&'a f32>;
 
+impl MatrixElements {
     pub fn new(elements: &[f32]) -> MatrixElements {
         MatrixElements(elements.to_vec())
     }
 
     pub fn empty(degree: usize) -> MatrixElements {
         MatrixElements(vec![0.0; degree.pow(2)])
+    }
+
+    pub fn as_slice(&self) -> &[f32] {
+        &self.0
     }
 
     pub fn get_column<'a>(&'a self, column: usize, degree: usize) -> Option<MatrixColumn<'a>> {
@@ -64,6 +74,3 @@ impl MatrixElements {
         self.0.len()
     }
 }
-
-pub type MatrixRow<'a>    = Vec<&'a f32>;
-pub type MatrixColumn<'a> = Vec<&'a f32>;
