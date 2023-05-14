@@ -14,7 +14,8 @@
 
 use crate::freeform_geometry::uv_pair::UVPair;
 
-pub mod matrix;
 pub mod basis_matrix_attributes;
+pub mod matrix;
+pub mod matrix_elements;
 
 pub type Step = UVPair;

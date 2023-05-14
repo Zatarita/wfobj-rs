@@ -20,13 +20,13 @@ pub enum UVPairError {
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum UVPair {
-    Curve(f32),
-    Surface(f32, f32)
+    Curve(usize),
+    Surface(usize, usize)
 }
 
 impl UVPair {
     pub fn from(parameters: &VecDeque<String>) -> Result<UVPair, UVPairError> {
-        let converted_parameters = match utility::convert_to_f32(parameters) {
+        let converted_parameters = match utility::convert_to_usize(parameters) {
             Ok(value) => value,
             _ => return Err(UVPairError::InvalidParameters)
         };
@@ -38,23 +38,37 @@ impl UVPair {
         }
     }
 
-    pub fn u(&self) -> &f32 {
+    pub fn u(&self) -> &usize {
         match self {
             Self::Curve(value)      => value,
             Self::Surface(value, _) => value
         }
     }
 
-    pub fn v(&self) -> Option<&f32> {
+    pub fn v(&self) -> Option<&usize> {
         match self {
             Self::Surface(_, value) => Some(value),
             _                             => None
+        }
+    }
+
+    pub fn is_curve(&self) -> bool {
+        match self {
+            Self::Curve(_) => true,
+            _              => false
+        }
+    }
+
+    pub fn is_surface(&self) -> bool {
+        match self {
+            Self::Surface(_, _) => true,
+            _                   => false
         }
     }
 }
 
 impl Default for UVPair {
     fn default() -> Self { 
-        UVPair::Curve(0.0)
+        UVPair::Curve(0)
     }
 }

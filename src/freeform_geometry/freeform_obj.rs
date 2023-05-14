@@ -11,7 +11,7 @@
 use super::freeform_types::FreeFormType;
 use super::Degree;
 
-#[derive(Debug, Clone, Copy, PartialEq, Default)]
+#[derive(Debug, Clone, PartialEq, Default)]
 pub struct FreeformObject {
     curve_type: FreeFormType,
     rational:   bool,

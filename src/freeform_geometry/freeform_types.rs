@@ -20,7 +20,7 @@ pub enum FreeFormTypesErrors {
     InvalidFreeFormType
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Default)]
+#[derive(Debug, Clone, PartialEq, Default)]
 pub enum FreeFormType {
    BasisMatrix(BasisMatrixAttributes),
    #[default]
