@@ -25,6 +25,18 @@ pub enum UVPair {
 }
 
 impl UVPair {
+    pub fn new_curve(elements: &[usize]) -> Result<UVPair, UVPairError> {
+        if elements.len() != 1 { return Err(UVPairError::InvalidBufferSize) };
+        
+        Ok(UVPair::Curve(elements[0]))
+    }
+
+    pub fn new_surface(elements: &[usize]) -> Result<UVPair, UVPairError> {
+        if elements.len() != 2 { return Err(UVPairError::InvalidBufferSize) };
+        
+        Ok(UVPair::Surface(elements[0], elements[1]))
+    }
+
     pub fn from(parameters: &VecDeque<String>) -> Result<UVPair, UVPairError> {
         let converted_parameters = match utility::convert_to_usize(parameters) {
             Ok(value) => value,

@@ -16,6 +16,7 @@ use super::matrix::{Matrix, MatrixError};
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum BasisMatrixAttributesError {
     InvalidMatrixType,
+    InvalidBufferSize,
     FreeFormTypeMismatch,
     MatrixSizeMismatch,
     UnknownError
@@ -43,10 +44,22 @@ impl BasisMatrixAttributes {
         }
     }
 
-    pub fn set_matrix_v(&mut self, elements: &[f32]) -> Result<(), BasisMatrixAttributesError> {
+    pub fn set_matrix_v(&mut self, elements: &[f32]) {
         match &self.matrix {
-            Matrix::Curve(_)                       => return Err(BasisMatrixAttributesError::InvalidMatrixType),
+            Matrix::Curve(u)      => self.matrix = Matrix::new_surface(u.as_slice(), elements),
             Matrix::Surface(u, _) => self.matrix = Matrix::new_surface(u.as_slice(), elements)
+        }
+    }
+
+    pub fn set_step(&mut self, elements: &[usize]) -> Result<(), BasisMatrixAttributesError> {
+        match elements.len() {
+            1      => {
+                self.step = Step::new_curve(elements).ok().ok_or(BasisMatrixAttributesError::InvalidBufferSize)?;
+            },
+            2 => {
+                self.step = Step::new_surface(elements).ok().ok_or(BasisMatrixAttributesError::InvalidBufferSize)?;
+            }
+            _ => return Err(BasisMatrixAttributesError::InvalidBufferSize)
         }
         Ok(())
     }
