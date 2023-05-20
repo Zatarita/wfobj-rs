@@ -38,7 +38,7 @@ impl UVPair {
     }
 
     pub fn from(parameters: &VecDeque<String>) -> Result<UVPair, UVPairError> {
-        let converted_parameters = match utility::convert_to_usize(parameters) {
+        let converted_parameters = match utility::convert_vec::<usize>(parameters) {
             Ok(value) => value,
             _ => return Err(UVPairError::InvalidParameters)
         };

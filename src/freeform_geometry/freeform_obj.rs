@@ -129,7 +129,7 @@ impl FreeFormObject {
     }
 
     fn parse_matrix_u(current_type: &FreeFormType, parameters: &VecDeque<String>) -> Result<FreeFormType, FreeFormObjectError> {
-        let converted_parameters = utility::convert_to_f32(parameters).ok().ok_or(FreeFormObjectError::InvalidParameters)?;
+        let converted_parameters = utility::convert_vec::<f32>(parameters).ok().ok_or(FreeFormObjectError::InvalidParameters)?;
         let mut new_attributes: BasisMatrixAttributes;
 
         // If we're the right type, get the attributes
@@ -155,7 +155,7 @@ impl FreeFormObject {
             return Err(FreeFormObjectError::InvalidFormType);
         }
 
-        let converted_parameters = utility::convert_to_f32(parameters).ok().ok_or(FreeFormObjectError::InvalidParameters)?;
+        let converted_parameters = utility::convert_vec::<f32>(parameters).ok().ok_or(FreeFormObjectError::InvalidParameters)?;
         // If matrix is a curve, this will cause an upgrade to surface
         new_attributes.set_matrix_v(&converted_parameters);
 
@@ -171,7 +171,7 @@ impl FreeFormObject {
             return Err(FreeFormObjectError::InvalidFormType);
         }
 
-        let converted_parameters = utility::convert_to_usize(parameters).ok().ok_or(FreeFormObjectError::InvalidParameters)?;
+        let converted_parameters = utility::convert_vec::<usize>(parameters).ok().ok_or(FreeFormObjectError::InvalidParameters)?;
         if let Err(BasisMatrixAttributesError::InvalidBufferSize) = new_attributes.set_step(&converted_parameters) {
             return Err(FreeFormObjectError::InvalidBufferSize);
         }
