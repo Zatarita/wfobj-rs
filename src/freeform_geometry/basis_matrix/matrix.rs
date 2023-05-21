@@ -17,9 +17,10 @@
 use crate::freeform_geometry::Degree;
 use super::matrix_elements::{MatrixElements, MatrixRow, MatrixColumn};
 
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum MatrixError {
     InvalidDegree,
-    InvalidBufferSize
+    CurveSurfaceMismatch
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -99,7 +100,7 @@ impl Matrix {
     pub fn validate_matrix(&self, degree: &Degree) -> Result<(), MatrixError> {
         // Verify the degree matches the matrix type
         if ( self.is_curve() && degree.is_surface() ) || ( self.is_surface() && degree.is_curve() ) {
-            return Err(MatrixError::InvalidDegree);
+            return Err(MatrixError::CurveSurfaceMismatch);
         } 
 
         // Verify the matrix size is correct for the degree.
@@ -124,7 +125,7 @@ impl Matrix {
             }
         };
 
-        Err(MatrixError::InvalidBufferSize)
+        Err(MatrixError::InvalidDegree)
     }
 }
 

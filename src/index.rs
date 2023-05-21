@@ -16,7 +16,7 @@ use std::rc::Rc;
 
 type BufferObject<T> = Vec<Rc<T>>;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum IndexError {
     IndexIsZero    // Only value index cannot be is zero, negative indices are relative, positive indices are absolute
 }

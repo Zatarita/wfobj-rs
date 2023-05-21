@@ -11,7 +11,7 @@
  *                  - Degree ✓
  *                      * Degree u required ✓
  *                      * Degree v only required for surfaces ✓
- *                      * For cardinal curve any value other than 3 is ignored
+ *                      * For cardinal curve any value other than 3 is ignored ✓
  *              Elements 
  *                  - Control Points
  *                  - 3D curves need parameter range
@@ -23,7 +23,7 @@
  *          Additional Requirements for Basis Matrix:
  *              Attributes (State-Setting)
  *                  - Basis Matrix ✓
- *                      * Matrix size must match degree(u, v): (u+1)x(u+1) | (v+1)x(v+1)
+ *                      * Matrix size must match degree(u, v): (u+1)x(u+1) | (v+1)x(v+1) ✓
  *                  - Basis Step ✓
  *                      * Step u required ✓
  *                      * Step v only required for surfaces ✓
@@ -34,7 +34,7 @@
  * ------------------------------------------------------------------------------------*/
 
 pub mod freeform_types;
-pub mod freeform_obj;
+pub mod freeform_definition;
 pub mod basis_matrix;
 pub mod uv_pair;
 

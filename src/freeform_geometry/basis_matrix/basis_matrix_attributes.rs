@@ -17,7 +17,7 @@ use super::matrix::{Matrix, MatrixError};
 pub enum BasisMatrixAttributesError {
     InvalidMatrixType,
     InvalidBufferSize,
-    FreeFormTypeMismatch,
+    CurveSurfaceMismatch,
     MatrixSizeMismatch,
     UnknownError
 }
@@ -66,16 +66,18 @@ impl BasisMatrixAttributes {
 
     // Make sure the matrix/step matches curve/surface type & The matrix size matches degree
     pub fn validate(&self, degree: &Degree) -> Result<(), BasisMatrixAttributesError> {
-        if let Err(MatrixError::InvalidDegree) = self.matrix.validate_matrix(degree) {
-            return Err(BasisMatrixAttributesError::MatrixSizeMismatch);
-        } 
+        match self.matrix.validate_matrix(degree) {
+            Err(MatrixError::CurveSurfaceMismatch) => return Err(BasisMatrixAttributesError::CurveSurfaceMismatch),
+            Err(MatrixError::InvalidDegree)        => return Err(BasisMatrixAttributesError::MatrixSizeMismatch),
+            _                                      => {}
+        };
 
         if self.step.is_curve() && self.matrix.is_curve() {
             Ok(())
         } else if self.step.is_surface() && self.matrix.is_surface() {
             Ok(())
         } else {
-            Err(BasisMatrixAttributesError::FreeFormTypeMismatch)
+            Err(BasisMatrixAttributesError::CurveSurfaceMismatch)
         }
     }
 }

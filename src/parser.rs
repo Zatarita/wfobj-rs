@@ -13,10 +13,6 @@ use std::collections::VecDeque;
 
 use crate::keywords;
 
-#[derive(Debug)]
-pub enum ParserError {
-}
-
 // Represents a single parsed line from an obj file
 #[derive(Debug)]
 pub struct ObjLine {
