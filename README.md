@@ -1,6 +1,7 @@
 # wfobj-rs
 Specification compliant Rust Wavefront Obj file parser/serialization
 
+* sadly, i haven't had time to dedicate to this lately, so it sits incomplete*
 
 # Overview
 OBJ files were originally created for "The Advanced Visualizer" which was a 3d graphics program developed by Wavefront Technologies in the late 1900's. This technology is now antiquated; however, the format still sees use to this day due to the simplicity of the format and plaintext formatting. There seem to be a few parsers for the Rust programming language for OBJ files; however, they only seem to parse model data, and overlook the rest of the specification. This repo intends to be a fully compliant parser for the obj 3.0 format.
